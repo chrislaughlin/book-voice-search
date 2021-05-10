@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import "./styles.css";
 import Mic from "./microphone-black-shape.svg";
 
-const SpeechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+// eslint-disable-next-line
+const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
 const speech = new SpeechRecognition();
 speech.continuous = true;
 
@@ -22,15 +22,8 @@ export default function App() {
   };
 
   useEffect(() => {
-    speech.onresult = (event) => {
-      console.log(event);
+    speech.onresult = event => {
       setText(event.results[event.results.length - 1][0].transcript);
-    };
-    speech.start = () => {
-      console.log("start");
-    };
-    speech.onend = () => {
-      console.log("onend");
     };
   }, []);
 
