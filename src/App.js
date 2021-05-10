@@ -1,31 +1,25 @@
-import { useState, useEffect } from "react";
+import React, { useEffect } from 'react';
+import { useVoice } from './useVoice';
+import Mic from './microphone-black-shape.svg'
+import { useBookFetch } from './useBookFetch';
 
-import "./styles.css";
-import Mic from "./microphone-black-shape.svg";
-
-// eslint-disable-next-line
-const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-const speech = new SpeechRecognition();
-speech.continuous = true;
-
-export default function App() {
-  const [isListening, setIsListening] = useState(false);
-  const [text, setText] = useState("");
-
-  const listen = () => {
-    setIsListening(!isListening);
-    if (isListening) {
-      speech.stop();
-    } else {
-      speech.start();
-    }
-  };
+const App = () => {
+  const {
+    text,
+    isListening,
+    listen,
+  } = useVoice();
+  const {
+    authorBooks,
+    isFetchingBooks,
+    fetchBooksByAuthor,
+  } = useBookFetch();
 
   useEffect(() => {
-    speech.onresult = event => {
-      setText(event.results[event.results.length - 1][0].transcript);
-    };
-  }, []);
+    if (text !== '') {
+      fetchBooksByAuthor(text);
+    }
+  }, [text])
 
   return (
     <>
@@ -41,6 +35,25 @@ export default function App() {
           />
         </div>
         <p>{text}</p>
+        {
+          isFetchingBooks ?
+            'fetching books....' :
+            <ul>
+              {
+                authorBooks.map((book, index) => {
+                  return (
+                    <li key={index}>
+                      <span>
+                        {book.title}
+                      </span>
+                    </li>
+                  )
+                })
+              }
+            </ul>
+
+        }
+
       </div>
       <div className="icon-reg">
         Icons made by{" "}
@@ -56,5 +69,7 @@ export default function App() {
         </a>
       </div>
     </>
-  );
+  )
 }
+
+export default App;
