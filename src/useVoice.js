@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+// eslint-disable-next-line
+const SpeechRecognition = webkitSpeechRecognition;
 const speech = new SpeechRecognition();
 speech.continuous = true;
 
