@@ -1,28 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import './index.css';
+import "./index.css";
 
-import { useVoice } from './useVoice';
-import Mic from './microphone-black-shape.svg'
-import { useBookFetch } from './useBookFetch';
+import { useVoice } from "./useVoice";
+import Mic from "./microphone-black-shape.svg";
+import { useBookFetch } from "./useBookFetch";
 
 const App = () => {
-  const {
-    text,
-    isListening,
-    listen,
-  } = useVoice();
-  const {
-    authorBooks,
-    isFetchingBooks,
-    fetchBooksByAuthor,
-  } = useBookFetch();
+  const { text, isListening, listen, voiceSupported } = useVoice();
+  const { authorBooks, isFetchingBooks, fetchBooksByAuthor } = useBookFetch();
 
   useEffect(() => {
-    if (text !== '') {
+    if (text !== "") {
       fetchBooksByAuthor(text);
     }
-  }, [text])
+  }, [text]);
+
+  if (!voiceSupported) {
+    return (
+      <div className="app">
+        <h1>
+          Voice recognition is not supported by your browser, please re-try with
+          a supported browser e.g. Chrome
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -38,25 +41,19 @@ const App = () => {
           />
         </div>
         <p>{text}</p>
-        {
-          isFetchingBooks ?
-            'fetching books....' :
-            <ul>
-              {
-                authorBooks.map((book, index) => {
-                  return (
-                    <li key={index}>
-                      <span>
-                        {book.title}
-                      </span>
-                    </li>
-                  )
-                })
-              }
-            </ul>
-
-        }
-
+        {isFetchingBooks ? (
+          "fetching books...."
+        ) : (
+          <ul>
+            {authorBooks.map((book, index) => {
+              return (
+                <li key={index}>
+                  <span>{book.title}</span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
       <div className="icon-reg">
         Icons made by{" "}
@@ -72,7 +69,7 @@ const App = () => {
         </a>
       </div>
     </>
-  )
-}
+  );
+};
 
 export default App;

@@ -4,7 +4,7 @@ import "./styles.css";
 import Mic from "./microphone-black-shape.svg";
 
 // eslint-disable-next-line
-const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+const SpeechRecognition = webkitSpeechRecognition;
 const speech = new SpeechRecognition();
 speech.continuous = true;
 
@@ -22,7 +22,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    speech.onresult = event => {
+    speech.onresult = (event) => {
       setText(event.results[event.results.length - 1][0].transcript);
     };
   }, []);
