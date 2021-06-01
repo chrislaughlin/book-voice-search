@@ -3,10 +3,15 @@ import { useState, useEffect } from "react";
 import "./styles.css";
 import Mic from "./microphone-black-shape.svg";
 
-// eslint-disable-next-line
-const SpeechRecognition = webkitSpeechRecognition;
-const speech = new SpeechRecognition();
-speech.continuous = true;
+let speech;
+if (window.webkitSpeechRecognition) {
+  // eslint-disable-next-line
+  const SpeechRecognition = webkitSpeechRecognition;
+  speech = new SpeechRecognition();
+  speech.continuous = true;
+} else {
+  speech = null;
+}
 
 export default function App() {
   const [isListening, setIsListening] = useState(false);

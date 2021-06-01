@@ -3,12 +3,13 @@ import { useState, useEffect } from "react";
 let speech;
 if (window.webkitSpeechRecognition) {
   // eslint-disable-next-line
-  const SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+  const SpeechRecognition = webkitSpeechRecognition;
   speech = new SpeechRecognition();
+  speech.continuous = true;
 } else {
   speech = null;
 }
-// eslint-disable-next-line
+
 const useVoice = () => {
   const [text, setText] = useState("");
   const [isListening, setIsListening] = useState(false);
