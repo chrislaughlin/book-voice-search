@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+
+import './index.css';
+
 import { useVoice } from './useVoice';
 import Mic from './microphone-black-shape.svg'
 import { useBookFetch } from './useBookFetch';
